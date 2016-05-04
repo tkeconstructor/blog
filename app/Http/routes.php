@@ -20,7 +20,16 @@ Route::get('/register', 'Auth\AuthController@getRegister');
 Route::post('/register', 'Auth\AuthController@postRegister');
 
 
+//Login Routes for Admin...
+Route::get('/admin/login','Admin\AuthController@getLogin');
+Route::post('/admin/login','Admin\AuthController@postLogin');
+Route::get('/admin/logout','Admin\AuthController@logout');
 
+// Registration Routes admin ...
+Route::get('admin/register', 'Admin\AuthController@getRegister');
+Route::post('admin/register', 'Admin\AuthController@postRegister');
+
+Route::get('/admin', 'Admin\AdminController@index');
 
 Route::get('/', function () {
     return redirect('/login');
