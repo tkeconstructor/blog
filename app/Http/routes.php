@@ -11,6 +11,10 @@
 |
 */
 
+Route::get('404',function(){
+	return view('errors.404');
+});
+
 // Authentication
 Route::get('/login', 'Auth\AuthController@getLogin');
 Route::post('/login', 'Auth\AuthController@postLogin');
@@ -21,15 +25,34 @@ Route::post('/register', 'Auth\AuthController@postRegister');
 
 
 //Login Routes for Admin...
-Route::get('/admin/login','Admin\AuthController@getLogin');
-Route::post('/admin/login','Admin\AuthController@postLogin');
-Route::get('/admin/logout','Admin\AuthController@logout');
+Route::get('admin/login','Admin\AuthController@getLogin');
+Route::post('admin/login','Admin\AuthController@postLogin');
+Route::get('admin/logout','Admin\AuthController@logout');
 
 // Registration Routes admin ...
 Route::get('admin/register', 'Admin\AuthController@getRegister');
 Route::post('admin/register', 'Admin\AuthController@postRegister');
+Route::group(['prefix'=>'admin','middleware'=>'admin'],function(){
+	
 
-Route::get('/admin', 'Admin\AdminController@index');
+	Route::get('/', 'Admin\AdminController@index');
+
+	// route for categories
+	Route::get('/categories','Admin\CategoriesController@index');
+	Route::post('/categories','Admin\CategoriesController@create');
+	Route::post('/categories/update','Admin\CategoriesController@update');
+
+	// route for courses
+	Route::get('/courses','Admin\CoursesController@index');
+	Route::post('/courses','Admin\CoursesController@create');
+	Route::post('/courses/update','Admin\CoursesController@update');
+	Route::get('/courses/{id}','Admin\CoursesController@show');
+
+
+	Route::post('/courses/{id}','Admin\CoursesController@assignLecture');
+
+});
+
 
 Route::get('/', function () {
     return redirect('/login');

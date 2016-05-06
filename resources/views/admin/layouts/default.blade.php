@@ -4,6 +4,7 @@
     <head>
         @include('admin.includes.head')
         @yield('stylesheet')
+        <meta name="csrf-token" content="{{ csrf_token() }}"/>
     </head>
     <body>
 
@@ -33,7 +34,31 @@
             @include('admin.includes.footer')
         </div>
 
+        <script src="{{URL::asset('js/jquery-ui.min.js')}}"></script>
+        <script type="text/javascript">
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            function getConfirm(url, alert) {
+                if (arguments[0] != null) {
+                    if (window.confirm(alert)) {
+                        location.href = url;
+                    }
+                    else {
+                        event.cancelBubble = true;
+                        event.returnValue = false;
+                        return false;
+                    }
+                }
+                else {
+                    return false;
+                }
+                return;
+            }
+        </script>
         @yield('script')
-   
     </body>
 </html>
